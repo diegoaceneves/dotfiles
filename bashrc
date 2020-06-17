@@ -1,5 +1,5 @@
 #""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-# .vimrc - Vim/GVim Configuration File
+# .bashrc - Bash Configuration File
 # Diego Neves - https://github.com/diegoaceneves/dotfiles
 #
 # "THE BEER-WARE LICENSE" (Revision 42):
