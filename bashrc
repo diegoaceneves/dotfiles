@@ -101,6 +101,6 @@ fi
 export PATH=$PATH:/usr/local/go/bin
 
 PS1='${bold}[${green}\T${reset}] '
-PS1+='[${bold}${orange}\u${purple}@${yellow}\h ${green}\W${reset}] '
+PS1+='[${bold}${userStyle}\u${purple}@${yellow}\h ${green}\W${reset}] '
 PS1+='$(prompt_git \[${purple}\] \[\]\[${blue}\])${bold}${red} +${reset}\n\$ '
 export PS1
