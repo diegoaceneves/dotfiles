@@ -98,7 +98,12 @@ if ! [[ "$PATH" =~ "$HOME/.local/bin:$HOME/bin:" ]]
 then
     PATH="$HOME/.local/bin:$HOME/bin:$PATH"
 fi
-export PATH=$PATH:/usr/local/go/bin
+
+if [[ -d /usr/local/go/bin ]]; then
+	PATH=$PATH:/usr/local/go/bin
+fi
+
+export PATH
 
 PS1='${bold}[${green}\T${reset}] '
 PS1+='[${bold}${userStyle}\u${purple}@${yellow}\h ${green}\W${reset}] '
