@@ -49,9 +49,15 @@ else
 fi;
 
 if [[ "${USER}" == "root" ]]; then
-	userStyle="${red}";
-else
 	userStyle="${orange}";
+else
+	userStyle="${blue}";
+fi;
+
+if [[ "${SSH_TTY}" ]]; then
+	hostStyle="${cyan}";
+else
+	hostStyle="${reset}${cyan}";
 fi;
 
 prompt_git() {
@@ -92,7 +98,7 @@ if [[ -d /usr/local/go/bin ]]; then
 fi
 
 PS1='${bold}[${green}\T${reset}] '
-PS1+='[${bold}${userStyle}\u${purple}@${yellow}\h ${green}\W${reset}] '
+PS1+='[${bold}${userStyle}\u${purple}@${hostStyle}\h ${bold}${green}\W${reset}] '
 PS1+='$(prompt_git \[${purple}\] \[\]\[${blue}\])${bold}${red} +${reset}\n\$ '
 
 #AWS
