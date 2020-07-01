@@ -98,14 +98,16 @@ if ! [[ "$PATH" =~ "$HOME/.local/bin:$HOME/bin:" ]]
 then
     PATH="$HOME/.local/bin:$HOME/bin:$PATH"
 fi
-
-if [[ -d /usr/local/go/bin ]]; then
-	PATH=$PATH:/usr/local/go/bin
-fi
-
-export PATH
+export PATH=$PATH:/usr/local/go/bin
 
 PS1='${bold}[${green}\T${reset}] '
 PS1+='[${bold}${userStyle}\u${purple}@${yellow}\h ${green}\W${reset}] '
 PS1+='$(prompt_git \[${purple}\] \[\]\[${blue}\])${bold}${red} +${reset}\n\$ '
 export PS1
+
+# Configure Bash History
+shopt -s direxpand histappend
+HISTCONTROL='ignoreboth'
+HISTTIMEFORMAT="[%F %T] "
+HISTSIZE=-1
+HISTFILESIZE=-1
