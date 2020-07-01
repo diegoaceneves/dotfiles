@@ -11,6 +11,13 @@ if [ -f /etc/bashrc ]; then
 	. /etc/bashrc
 fi
 
+# Configure Bash History
+shopt -s direxpand histappend
+HISTCONTROL='ignoreboth'
+HISTTIMEFORMAT="[%F %T] "
+HISTSIZE=-1
+HISTFILESIZE=-1
+
 ## Set Color
 if tput setaf 1 &> /dev/null; then
 	tput sgr0; # reset colors
@@ -47,50 +54,32 @@ else
 	userStyle="${orange}";
 fi;
 
-## Function by https://github.com/mathiasbynens/dotfiles/blob/main/.bash_prompt
 prompt_git() {
 	local s='';
 	local branchName='';
-
-	# Check if the current directory is in a Git repository.
 	git rev-parse --is-inside-work-tree &>/dev/null || return;
-
-	# Check for what branch we’re on.
-	# Get the short symbolic ref. If HEAD isn’t a symbolic ref, get a
-	# tracking remote branch or tag. Otherwise, get the
-	# short SHA for the latest commit, or give up.
 	branchName="$(git symbolic-ref --quiet --short HEAD 2> /dev/null || \
 		git describe --all --exact-match HEAD 2> /dev/null || \
 		git rev-parse --short HEAD 2> /dev/null || \
 		echo '(unknown)')";
-
-	# Early exit for Chromium & Blink repo, as the dirty check takes too long.
-	# Thanks, @paulirish!
-	# https://github.com/paulirish/dotfiles/blob/dd33151f/.bash_prompt#L110-L123
 	repoUrl="$(git config --get remote.origin.url)";
 	if grep -q 'chromium/src.git' <<< "${repoUrl}"; then
 		s+='*';
 	else
-		# Check for uncommitted changes in the index.
 		if ! $(git diff --quiet --ignore-submodules --cached); then
 			s+='+';
 		fi;
-		# Check for unstaged changes.
 		if ! $(git diff-files --quiet --ignore-submodules --); then
 			s+='!';
 		fi;
-		# Check for untracked files.
 		if [ -n "$(git ls-files --others --exclude-standard)" ]; then
 			s+='?';
 		fi;
-		# Check for stashed files.
 		if $(git rev-parse --verify refs/stash &>/dev/null); then
 			s+='$';
 		fi;
 	fi;
-
 	[ -n "${s}" ] && s=" [${s}]";
-
 	echo -e "${1}${branchName}${2}${s}";
 }
 
@@ -98,16 +87,13 @@ if ! [[ "$PATH" =~ "$HOME/.local/bin:$HOME/bin:" ]]
 then
     PATH="$HOME/.local/bin:$HOME/bin:$PATH"
 fi
-export PATH=$PATH:/usr/local/go/bin
+if [[ -d /usr/local/go/bin ]]; then
+	PATH=$PATH:/usr/local/go/bin
+fi
 
 PS1='${bold}[${green}\T${reset}] '
 PS1+='[${bold}${userStyle}\u${purple}@${yellow}\h ${green}\W${reset}] '
 PS1+='$(prompt_git \[${purple}\] \[\]\[${blue}\])${bold}${red} +${reset}\n\$ '
-export PS1
 
-# Configure Bash History
-shopt -s direxpand histappend
-HISTCONTROL='ignoreboth'
-HISTTIMEFORMAT="[%F %T] "
-HISTSIZE=-1
-HISTFILESIZE=-1
+export PS1
+export PATH
