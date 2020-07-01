@@ -95,5 +95,10 @@ PS1='${bold}[${green}\T${reset}] '
 PS1+='[${bold}${userStyle}\u${purple}@${yellow}\h ${green}\W${reset}] '
 PS1+='$(prompt_git \[${purple}\] \[\]\[${blue}\])${bold}${red} +${reset}\n\$ '
 
+#AWS
+if [[ -f '/usr/local/aws/bin/aws_completer' ]]; then
+	complete -C '/usr/local/aws/bin/aws_completer' aws 
+fi
+
 export PS1
 export PATH
