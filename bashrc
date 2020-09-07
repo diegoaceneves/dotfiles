@@ -101,6 +101,11 @@ if [[ -f /usr/bin/kubectl ]]; then
 	alias k="kubectl"
 fi
 
+if [[ -d /opt/mssql-tools/bin ]]; then
+	PATH=$PATH:/opt/mssql-tools/bin
+fi
+
+
 PS1='${bold}[${green}\T${reset}] '
 PS1+='[${bold}${userStyle}\u${purple}@${hostStyle}\h ${bold}${green}\W${reset}] '
 PS1+='$(prompt_git \[${purple}\] \[\]\[${blue}\])${bold}${red} +${reset}\n\$ '
