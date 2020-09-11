@@ -18,6 +18,13 @@ HISTTIMEFORMAT="[%F %T] "
 HISTSIZE=-1
 HISTFILESIZE=-1
 
+# Export AWS Secret
+if [[ -e $(pwd)"/.aws/credentials" ]]; then
+	export AWS_SECRET_ACCESS_KEY=$(cat ~/.aws/credentials | grep aws_secret_access_key | awk '{print $3}')
+	export AWS_ACCESS_KEY_ID=$(cat ~/.aws/credentials | grep aws_access_key_id | awk '{print $3}')
+fi
+
+
 ## Set Color
 if tput setaf 1 &> /dev/null; then
 	tput sgr0; # reset colors
@@ -114,6 +121,9 @@ PS1+='$(prompt_git \[${purple}\] \[\]\[${blue}\])${bold}${red} +${reset}\n\$ '
 if [[ -f '/usr/local/aws/bin/aws_completer' ]]; then
 	complete -C '/usr/local/aws/bin/aws_completer' aws 
 fi
+
+
+
 
 export PS1
 export PATH
