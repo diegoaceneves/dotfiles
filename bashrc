@@ -11,8 +11,7 @@ if [ -f /etc/bashrc ]; then
 	. /etc/bashrc
 fi
 
-echo $PATH
-echo ---
+GIT=git
 
 # Configure Bash History
 shopt -s direxpand histappend
@@ -69,36 +68,37 @@ else
 	hostStyle="${reset}${cyan}";
 fi;
 
-prompt_git() {
-	local s='';
-	local branchName='';
-	git rev-parse --is-inside-work-tree &>/dev/null || return;
-	branchName="$(git symbolic-ref --quiet --short HEAD 2> /dev/null || \
-		git describe --all --exact-match HEAD 2> /dev/null || \
-		git rev-parse --short HEAD 2> /dev/null || \
-		echo '(unknown)')";
-	repoUrl="$(git config --get remote.origin.url)";
-	if grep -q 'chromium/src.git' <<< "${repoUrl}"; then
-		s+='*';
-	else
-		if ! $(git diff --quiet --ignore-submodules --cached); then
-			s+='+';
+which $GIT 2> /dev/null > /dev/null
+if [[ $? == 0 ]]; then
+	prompt_git() {
+		local s='';
+		local branchName='';
+		git rev-parse --is-inside-work-tree &>/dev/null || return;
+		branchName="$(git symbolic-ref --quiet --short HEAD 2> /dev/null || \
+			git describe --all --exact-match HEAD 2> /dev/null || \
+			git rev-parse --short HEAD 2> /dev/null || \
+			echo '(unknown)')";
+		repoUrl="$(git config --get remote.origin.url)";
+		if grep -q 'chromium/src.git' <<< "${repoUrl}"; then
+			s+='*';
+		else
+			if ! $(git diff --quiet --ignore-submodules --cached); then
+				s+='+';
+			fi;
+			if ! $(git diff-files --quiet --ignore-submodules --); then
+				s+='!';
+			fi;
+			if [ -n "$(git ls-files --others --exclude-standard)" ]; then
+				s+='?';
+			fi;
+			if $(git rev-parse --verify refs/stash &>/dev/null); then
+				s+='$';
+			fi;
 		fi;
-		if ! $(git diff-files --quiet --ignore-submodules --); then
-			s+='!';
-		fi;
-		if [ -n "$(git ls-files --others --exclude-standard)" ]; then
-			s+='?';
-		fi;
-		if $(git rev-parse --verify refs/stash &>/dev/null); then
-			s+='$';
-		fi;
-	fi;
-	[ -n "${s}" ] && s=" [${s}]";
-	echo -e "${1}${branchName}${2}${s}";
-}
-
-echo $PATH
+		[ -n "${s}" ] && s=" [${s}]";
+		echo -e "${1}${branchName}${2}${s}";
+	}
+fi
 
 if ! [[ "$PATH" =~ "$HOME/.local/bin:$HOME/bin:" ]]; then
     PATH="$HOME/.local/bin:$HOME/bin:$PATH"
@@ -106,20 +106,24 @@ fi
 
 
 if ! [[ "$PATH" =~ "/usr/local/go/bin" ]]; then
-   if [[ -d /usr/local/go/bin ]]; then
-	PATH=$PATH:/usr/local/go/bin
-   fi
+    if [[ -d /usr/local/go/bin ]]; then
+    	PATH=$PATH:/usr/local/go/bin
+    fi
 fi   
 
 if ! [[ "$PATH" =~ "$HOME/.linuxbrew/bin" ]]; then
-   if [[ -d ~/.linuxbrew/bin ]]; then
-	PATH=$PATH:~/.linuxbrew/bin
-   fi
+	if [[ -d ~/.linuxbrew/bin ]]; then
+		PATH=$PATH:~/.linuxbrew/bin
+	fi
 fi
 
 PS1='${bold}[${green}\T${reset}] '
 PS1+='[${bold}${userStyle}\u${purple}@${hostStyle}\h ${bold}${green}\W${reset}] '
-PS1+='$(prompt_git \[${purple}\] \[\]\[${blue}\])${bold}${red} +${reset}\n\$ '
+
+which $GIT 2> /dev/null > /dev/null
+if [[ $? == 0 ]]; then
+	PS1+='$(prompt_git \[${purple}\] \[\]\[${blue}\])${bold}${red} +${reset}\n\$ '
+fi 
 
 export PS1
 export PATH
