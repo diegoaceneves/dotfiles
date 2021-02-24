@@ -11,6 +11,9 @@ if [ -f /etc/bashrc ]; then
 	. /etc/bashrc
 fi
 
+echo $PATH
+echo ---
+
 # Configure Bash History
 shopt -s direxpand histappend
 HISTCONTROL='ignoreboth'
@@ -19,11 +22,10 @@ HISTSIZE=-1
 HISTFILESIZE=-1
 
 # Export AWS Secret
-if [[ -e $(pwd)"/.aws/credentials" ]]; then
+if [[ -e $(pwd)"~/.aws/credentials" ]]; then
 	export AWS_SECRET_ACCESS_KEY=$(cat ~/.aws/credentials | grep aws_secret_access_key | awk '{print $3}')
 	export AWS_ACCESS_KEY_ID=$(cat ~/.aws/credentials | grep aws_access_key_id | awk '{print $3}')
 fi
-
 
 ## Set Color
 if tput setaf 1 &> /dev/null; then
@@ -96,34 +98,28 @@ prompt_git() {
 	echo -e "${1}${branchName}${2}${s}";
 }
 
-if ! [[ "$PATH" =~ "$HOME/.local/bin:$HOME/bin:" ]]
-then
+echo $PATH
+
+if ! [[ "$PATH" =~ "$HOME/.local/bin:$HOME/bin:" ]]; then
     PATH="$HOME/.local/bin:$HOME/bin:$PATH"
 fi
-if [[ -d /usr/local/go/bin ]]; then
+
+
+if ! [[ "$PATH" =~ "/usr/local/go/bin" ]]; then
+   if [[ -d /usr/local/go/bin ]]; then
 	PATH=$PATH:/usr/local/go/bin
-fi
+   fi
+fi   
 
-if [[ -f /usr/bin/kubectl ]]; then
-	alias k="kubectl"
+if ! [[ "$PATH" =~ "$HOME/.linuxbrew/bin" ]]; then
+   if [[ -d ~/.linuxbrew/bin ]]; then
+	PATH=$PATH:~/.linuxbrew/bin
+   fi
 fi
-
-if [[ -d /opt/mssql-tools/bin ]]; then
-	PATH=$PATH:/opt/mssql-tools/bin
-fi
-
 
 PS1='${bold}[${green}\T${reset}] '
 PS1+='[${bold}${userStyle}\u${purple}@${hostStyle}\h ${bold}${green}\W${reset}] '
 PS1+='$(prompt_git \[${purple}\] \[\]\[${blue}\])${bold}${red} +${reset}\n\$ '
-
-#AWS
-if [[ -f '/usr/local/aws/bin/aws_completer' ]]; then
-	complete -C '/usr/local/aws/bin/aws_completer' aws 
-fi
-
-
-
 
 export PS1
 export PATH
