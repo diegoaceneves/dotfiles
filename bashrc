@@ -97,7 +97,7 @@ fi
 
 which $AWS 2> /dev/null > /dev/null
 if [[ $? == 0 ]]; then
-	if [[ -f .aws/credentials ]]; then
+	if [[ -f ~/.aws/credentials ]]; then
 		aws_export_keys(){
 			export AWS_ACCESS_KEY_ID=$(aws configure get $1.aws_access_key_id)
 			export AWS_SECRET_ACCESS_KEY=$(aws configure get $1.aws_secret_access_key)
