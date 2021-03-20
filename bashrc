@@ -12,6 +12,7 @@ if [ -f /etc/bashrc ]; then
 fi
 
 GIT=git
+AWS=aws
 
 # Configure Bash History
 shopt -s direxpand histappend
@@ -19,12 +20,6 @@ HISTCONTROL='ignoreboth'
 HISTTIMEFORMAT="[%F %T] "
 HISTSIZE=-1
 HISTFILESIZE=-1
-
-# Export AWS Secret
-if [[ -e $(pwd)"~/.aws/credentials" ]]; then
-	export AWS_SECRET_ACCESS_KEY=$(cat ~/.aws/credentials | grep aws_secret_access_key | awk '{print $3}')
-	export AWS_ACCESS_KEY_ID=$(cat ~/.aws/credentials | grep aws_access_key_id | awk '{print $3}')
-fi
 
 ## Set Color
 if tput setaf 1 &> /dev/null; then
@@ -98,6 +93,20 @@ if [[ $? == 0 ]]; then
 		[ -n "${s}" ] && s=" [${s}]";
 		echo -e "${1}${branchName}${2}${s}";
 	}
+fi
+
+which $AWS 2> /dev/null > /dev/null
+if [[ $? == 0 ]]; then
+	if [[ -f .aws/credentials ]]; then
+		aws_export_keys(){
+			export AWS_ACCESS_KEY_ID=$(aws configure get $1.aws_access_key_id)
+			export AWS_SECRET_ACCESS_KEY=$(aws configure get $1.aws_secret_access_key)
+		}
+		aws_list_profiles(){
+			aws configure list-profiles
+		}
+	fi
+
 fi
 
 if ! [[ "$PATH" =~ "$HOME/.local/bin:$HOME/bin:" ]]; then
