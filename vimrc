@@ -15,8 +15,6 @@ syntax on
 set mouse=r
 
 "set colorscheme
-packadd! dracula
-colorscheme dracula
 
 "Configure tabs 
 if (&filetype=='html' || &filetype=='htm' || &filetype=='xhtm')
