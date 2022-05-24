@@ -3,6 +3,7 @@ right_format		= ""
 scan_timeout		= 20
 command_timeout		= 500 
 format			= """
+$sudo\
 $username\
 $hostname\
 $battery\
@@ -17,13 +18,14 @@ $time\
 $php\
 $python\
 $terraform\
-$status\
+$docker_context\
+$cmd_duration\
 $shell\
-$cmd_duration"""
+$status"""
 
 [aws]
 format			= 'on [$symbol($profile )(\($region\) )(\[$duration\] )]($style)'
-symbol			= "☁️  "
+symbol			= "☁️ "
 disabled		= true
 
 [azure]
@@ -41,12 +43,11 @@ format			= "[$symbol$percentage]($style)"
 disabled		= false
 
 [[battery.display]]
-
 threshold = 100
 style = "bold red"
 
 [buf]
-symbol			= "🦬 "
+symbol			= "🦬"
 disabled		= true
 
 [c]
@@ -87,9 +88,18 @@ disabled		= true
 disabled		= true
 
 [directory]
-truncation_length	= 2
+truncation_length	= 1
+truncate_to_repo	= true
+format			= "[$path]($style)[$read_only]($read_only_style) "
+style			= "bold cyan"
+read_only		= "🔒"
+read_only_style		= "red"
 truncation_symbol	= "…/"
+repo_root_style		= "None"
+repo_root_format	= "[$before_root_path]($style)[$repo_root]($repo_root_style)[$path]($style)[$read_only]($read_only_style) "
 home_symbol		= "🏠"
+use_os_path_sep		= true
+disabled		= false
 
 [directory.substitutions]
 "Desktop"		= "🖼️"
@@ -107,7 +117,14 @@ home_symbol		= "🏠"
 "Vídeos"		= "📹"
 
 [docker_context]
-disabled		= true
+format			= "[$symbol$context]($style)"
+symbol			= "🐳"
+only_with_files		= true
+detect_extensions	= []
+detect_files		= ["docker-compose.yml", "docker-compose.yaml", "Dockerfile"]
+detect_folders		= []
+style			= "blue bold"
+disabled		= false
 
 [dotnet]
 disabled		= true
@@ -143,7 +160,7 @@ format			= "[\\($hash$tag\\)]($style) "
 style			= "bold green"
 only_detached		= true
 tag_disabled		= true
-tag_symbol		= "🔖 "
+tag_symbol		= "🔖"
 disabled		= false
 
 [git_state]
@@ -272,7 +289,7 @@ disabled		= true
 
 [python]
 version_format		= "v${raw}"
-symbol			= "🐍 "
+symbol			= "🐍"
 style			= "yellow bold"
 pyenv_prefix		= "pyenv"
 python_binary		= ["python", "python3", "python2"]
@@ -288,11 +305,11 @@ format			= "with [📐 $version](blue bold)"
 disabled		= true
 
 [red]
-symbol			= "🔴 "
+symbol			= "🔴"
 disabled		= true
 
 [ruby]
-symbol			= "🔺 "
+symbol			= "🔺"
 disabled		= true
 
 [rust]
@@ -300,7 +317,7 @@ format			= "[⚙️ $version](red bold)"
 disabled		= true
 
 [scala]
-symbo			= "🌟 "
+symbo			= "🌟"
 disabled		= true
 
 [shell]
@@ -341,8 +358,9 @@ pipestatus_format	= '\\[$pipestatus\\] => [$symbol$common_meaning$signal_name$ma
 disabled		= false
 
 [sudo]
+format			= "[$symbol]($style)"
 style			= "bold green"
-symbol			= "👩‍💻 "
+symbol			= "🧙"
 disabled		= false
 
 [swift]
@@ -359,11 +377,12 @@ style			= "bold 105"
 disabled		= false
 
 [time]
-disabled		= false
 format			= '🕙[\[$time\]]($style) '
 time_format		= "%T"
-utc_time_offset		= "-3"
+style			= "bold green"
 time_range		= "00:00:00-23:59:59"
+utc_time_offset		= "local"
+disabled		= false
 
 [username]
 style_user		= "green bold"
