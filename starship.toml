@@ -1,0 +1,390 @@
+add_newline		= false
+right_format		= ""
+scan_timeout		= 20
+command_timeout		= 500 
+format			= """
+$username\
+$hostname\
+$battery\
+$memory_usage\
+$directory\
+$git_branch\
+$git_commit\
+$git_state\
+$git_metrics\
+$git_status
+$time\
+$php\
+$python\
+$terraform\
+$status\
+$shell\
+$cmd_duration"""
+
+[aws]
+format			= 'on [$symbol($profile )(\($region\) )(\[$duration\] )]($style)'
+symbol			= "☁️  "
+disabled		= true
+
+[azure]
+format			= "[$symbol($subscription)]($style) "
+symbol			= "ﴃ "
+style			= "blue bold"
+disabled		= true
+
+[battery]
+full_symbol		= "🔋"
+charging_symbol		= "⚡️"
+discharging_symbol	= "💀"
+empty_symbol		= "🪫"
+format			= "[$symbol$percentage]($style)"
+disabled		= false
+
+[[battery.display]]
+
+threshold = 100
+style = "bold red"
+
+[buf]
+symbol			= "🦬 "
+disabled		= true
+
+[c]
+format			= "[$name $version]($style)"
+disabled		= true
+
+[character]
+success_symbol		= ""
+error_symbol		= ""
+
+[cmake]
+disabled		= true
+
+[cobol]
+disabled		= true
+
+[cmd_duration]
+format			= "[$duration](bold green) "
+min_time		= 2
+show_milliseconds	= true
+show_notifications	= true
+disabled		= false
+
+[conda]
+disabled		= true
+
+[container]
+format			= "[$symbol \\[$name\\]]($style) "
+disabled		= true
+
+[crystal]
+disabled		= true
+
+[dart]
+disabled		= true
+
+[deno]
+disabled		= true
+
+[directory]
+truncation_length	= 2
+truncation_symbol	= "…/"
+home_symbol		= "🏠"
+
+[directory.substitutions]
+"Desktop"		= ""
+"Área de Trabalho"	= ""
+"Documents"		= "📝"
+"Documentos"		= "📝"
+"Downloads"		= "⬇️"
+"Music"			= "🎶 "
+"Música"		= "🎶 "
+"Pictures"		= "📷 "
+"Imagens"		= "📷 "
+"Public"		= "🚌"
+"Público"		= "🚌"
+"Videos"		= "📹"
+"Vídeos"		= "📹"
+
+[docker_context]
+disabled		= true
+
+[dotnet]
+disabled		= true
+
+[elixir]
+disabled		= true
+
+[elm]
+disabled		= true
+
+[erlang]
+disabled		= true
+
+[fill]
+disabled		= true
+
+[gcloud]
+disabled		= true
+
+[git_branch]
+always_show_remote	= false
+format			= "on [$symbol$branch(:$remote_branch)]($style) "
+symbol			= " "
+style			= "bold purple"
+truncation_symbol	= "…"
+only_attached		= false
+ignore_branches		= []
+disabled		= false
+
+[git_commit]
+commit_hash_length	= 7
+format			= "[\\($hash$tag\\)]($style) "
+style			= "bold green"
+only_detached		= true
+tag_disabled		= true
+tag_symbol		= "🔖 "
+disabled		= false
+
+[git_state]
+rebase			= "REBASING"
+merge			= "MERGING"
+revert			= "REVERTING"
+cherry_pick		= "[🍒 PICKING](bold red)"
+bisect			= "BISECTING"
+am			= "AM"
+am_or_rebase		= "AM/REBASE"
+style			= "bold yellow"
+format			='\([$state( $progress_current/$progress_total)]($style)\) '
+disabled		= false
+
+[git_metrics]
+added_style		= "bold green"
+deleted_style		= "bold red"
+only_nonzero_diffs	= true
+format			= '[+$added]($added_style)/[-$deleted]($deleted_style) '
+disabled		= false
+
+[git_status]
+format			= '([\[$all_status$ahead_behind\]]($style) )'
+conflicted		= "🏳"
+ahead			= "🏎💨"
+behind			= "😰"
+diverged		= "😵"
+up_to_date		= "✓"
+untracked		= "🤷"
+stashed			= "📦"
+modified		= "📝"
+staged			= '[++\($count\)](green)'
+renamed			= "👅"
+deleted			= "🗑"
+ignore_submodules	= false
+style			= "bold red"
+disabled		= false
+
+[golang]
+disabled		= true
+
+[haskell]
+disabled		= true
+
+[helm]
+disabled		= true
+
+[hostname]
+ssh_only		= false
+format			= "@[$hostname](bold red)"
+disabled		= false
+
+[java]
+disabled		= true
+
+[jobs]
+disabled		= true
+
+[julia]
+disabled		= true
+
+[kotlin]
+disabled		= true
+
+[kubernetes]
+disabled		= true
+
+[line_break]
+disabled		= false
+
+[localip]
+ssh_only		= false
+format			= "[$localipv4]($style)"
+style			= "bold yellow"
+disabled		= false
+
+[lua]
+disabled		= true
+
+[memory_usage]
+disabled		= false
+threshold		= -1
+symbol			= "💻"
+style			= "bold green"
+format			= "[$symbol${ram} ${swap}]($style) "
+
+[hg_branch]
+disabled		= true
+
+[nim]
+disabled		= true
+
+[nix_shell]
+disabled		= true
+
+[nodejs]
+disabled		= true
+
+[ocaml]
+disabled		= true
+
+[openstack]
+disabled		= true
+
+[package]
+disabled		= true
+
+[perl]
+disabled		= true
+
+[php]
+format			= "[$symbol($version )]($style)"
+version_format		= "v${raw}"
+symbol			= "🐘 "
+detect_extensions	= ["php"]
+detect_files		= ["composer.json", ".php-version"]
+detect_folders		= []
+style			= "147 bold"
+disabled		= false
+
+[pulumi]
+disabled		= true
+
+[purescript]
+disabled		= true
+
+[python]
+version_format		= "v${raw}"
+symbol			= "🐍 "
+style			= "yellow bold"
+pyenv_prefix		= "pyenv"
+python_binary		= ["python", "python3", "python2"]
+detect_extensions	= ["py"]
+detect_files		= [".python-version", "Pipfile", "__init__.py", "pyproject.toml", "requirements.txt", "setup.py", "tox.ini"]
+detect_folders		= []
+format			= '[${symbol}${pyenv_prefix}(${version} )(\($virtualenv\) )]($style)'
+pyenv_version_name	= false
+disabled		= false
+
+[rlang]
+format			= "with [📐 $version](blue bold)"
+disabled		= true
+
+[red]
+symbol			= "🔴 "
+disabled		= true
+
+[ruby]
+symbol			= "🔺 "
+disabled		= true
+
+[rust]
+format			= "[⚙️ $version](red bold)"
+disabled		= true
+
+[scala]
+symbo			= "🌟 "
+disabled		= true
+
+[shell]
+bash_indicator		= ">_"
+fish_indicator		= ""
+powershell_indicator	= "_"
+unknown_indicator	= "mystery shell"
+style			= "cyan bold"
+disabled		= false
+
+[shlvl]
+format			= "$shlvl level(s) down"
+threshold		= 3
+disabled		= true
+
+[singularity]
+format			= '[📦 \[$env\]]($style) '
+disabled		= true
+
+[spack]
+format			= "[$symbol$environment](dimmed blue) "
+disabled		= true
+
+[status]
+format			= "[$symbol$status]($style) "
+symbol			= "✖"
+success_symbol		= "👌"
+not_executable_symbol	= "🚫"
+not_found_symbol	= "🔍"
+sigint_symbol		= "🧱"
+signal_symbol		= "⚡"
+style			= "bold red"
+recognize_signal_code	= true
+map_symbol		= true
+pipestatus		= false
+pipestatus_separator	= '|'
+pipestatus_format	= '\\[$pipestatus\\] => [$symbol$common_meaning$signal_name$maybe_int]($style)'
+disabled		= false
+
+[sudo]
+style			= "bold green"
+symbol			= "👩‍💻 "
+disabled		= false
+
+[swift]
+format			= "[🏎  $version](red bold)"
+disabled		= true
+
+[terraform]
+format			= "[$symbol $version$workspace]($style) "
+version_format		= "v${raw}"
+symbol			= "💠"
+detect_extensions	= ["tf", "tfplan", "tfstate"]
+detect_files		= [".terraform"]
+style			= "bold 105"
+disabled		= false
+
+[time]
+disabled		= false
+format			= '🕙[\[$time\]]($style) '
+time_format		= "%T"
+utc_time_offset		= "-3"
+time_range		= "00:00:00-23:59:59"
+
+[username]
+style_user		= "green bold"
+style_root		= "orange bold"
+format			= "[$user]($style)"
+disabled		= false
+show_always		= true
+
+[vagrant]
+format			= "[⍱ $version](bold white) "
+disabled		= true
+
+[vlang]
+format			= "[V $version](blue bold) "
+disabled		= true
+
+[vcsh]
+format			= "[🆅 $repo](bold blue) "
+disabled		= true
+
+[zig]
+symbol			= "⚡️"
+disabled		= true
+
