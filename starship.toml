@@ -65,7 +65,7 @@ disabled		= true
 disabled		= true
 
 [cmd_duration]
-format			= "[$duration](bold green) "
+format			= "[$duration](bold purple) "
 min_time		= 2
 show_milliseconds	= true
 show_notifications	= true
@@ -342,14 +342,14 @@ format			= "[$symbol$environment](dimmed blue) "
 disabled		= true
 
 [status]
-format			= "[$symbol$status]($style) "
+format			= "[$symbol $status]($style) "
 symbol			= "✖"
 success_symbol		= "👌"
 not_executable_symbol	= "🚫"
 not_found_symbol	= "🔍"
 sigint_symbol		= "🧱"
 signal_symbol		= "⚡"
-style			= "bold red"
+style			= "bold yellow"
 recognize_signal_code	= true
 map_symbol		= true
 pipestatus		= false
@@ -385,7 +385,7 @@ utc_time_offset		= "local"
 disabled		= false
 
 [username]
-style_user		= "green bold"
+style_user		= "blue bold"
 style_root		= "orange bold"
 format			= "[$user]($style)"
 disabled		= false
